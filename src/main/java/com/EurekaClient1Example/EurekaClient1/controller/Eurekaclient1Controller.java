@@ -5,6 +5,7 @@ import com.EurekaClient1Example.EurekaClient1.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,8 @@ public class Eurekaclient1Controller {
     @Autowired
     private LoadBalancerClient loadBalancerClient;
     private RestTemplate restTemplate = new RestTemplate();
-
+    @Autowired
+    Environment environment;
     @GetMapping(value = "/calleurekaclient1")
     public ResponseEntity callEurekaClient1(){
         return new ResponseEntity("Hello From Client 1 From Wasim", HttpStatus.OK);
@@ -79,9 +81,13 @@ public class Eurekaclient1Controller {
         }
     }
 
+    @GetMapping("/calleurekaclient1")
+    public ResponseEntity callEurekaClient2(){
+        return new ResponseEntity("Hello From Client 1 From port No. "+environment.getProperty("local.server.port")+" This is First Client service.", HttpStatus.OK);
+    }
 
     private String getEurkaClient2BaseUri(){
-        ServiceInstance serviceInstance =  loadBalancerClient.choose("EUREKACLIENT2");
+        ServiceInstance serviceInstance =  loadBalancerClient.choose("EUREKA-CLIENT2");
         return serviceInstance.getUri().toString();
     }
 }
