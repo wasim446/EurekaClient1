@@ -81,7 +81,7 @@ public class Eurekaclient1Controller {
         }
     }
 
-    @GetMapping("/calleurekaclient1")
+    @GetMapping("/eurekaclientone")
     public ResponseEntity callEurekaClient2(){
         return new ResponseEntity("Hello From Client 1 From port No. "+environment.getProperty("local.server.port")+" This is First Client service.", HttpStatus.OK);
     }
